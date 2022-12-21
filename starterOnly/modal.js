@@ -7,7 +7,7 @@ function editNav() {
   }
 }
 
-// DOM Elements
+// Get DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
@@ -15,19 +15,13 @@ const modalCloseIcon = document.querySelector(".close");
 const form = document.getElementById('form');
 
 
-//Add error container to form inputs 
-
-
-
-// launch modal event
+// Launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
-// launch modal form
+// Launch modal form
 function launchModal() {
   modalbg.style.display = "block";
 }
-
-
 
 // Close modal form
 function closeModal() {
@@ -46,32 +40,51 @@ form.addEventListener('submit', (e) => {
 
 //Validate form
 function validate() {
+
+  //Regex necessary for different validations
   const nameRegex =  /^[a-z][a-z\d]*[a-z]$/;
-  const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
+  const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+  const dateRegex = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/;
 
 
   //First Name validation
   let firstName = document.getElementById('first').value.trim();
   if(!nameRegex.test(firstName)){
-    const nameErrorMessage = "Le prénom doit être composé uniquement de caractères et en contenier au moins 2";
+    const nameErrorMessage = "Le prénom doit être composé uniquement de caractères et en contenir au moins 2";
     printError(formData[0], nameErrorMessage);
+  } else {
+    removeError(formData[0]);
   }
 
   //Last name validation
   let lastName = document.getElementById('last').value.trim();
   if(!nameRegex.test(lastName)){
-    const lastNameErrorMessage = "Le nom doit être composé uniquement de caractères et en contenier au moins 2"
-    console.log(lastNameErrorMessage);
+    const lastNameErrorMessage = "Le nom doit être composé uniquement de caractères et en contenir au moins 2"
+    printError(formData[1], lastNameErrorMessage);
+  } else {
+    removeError(formData[1]);
   }
   
   //Email validation
   let email = document.getElementById('email').value.trim().toLowerCase();
   if(!emailRegex.test(email)){
     const emailErrorMessage = "Veuillez entrer une adresse e-mail valide";
-    console.log(emailErrorMessage);
+    printError(formData[2], emailErrorMessage);
+  } else {
+    removeError(formData[2]);
   }
   
   //Date validation
+  let date = document.getElementById('birthdate').value;
+  if (!dateRegex.test(date)) {
+    const dateErrorMessage = "Veuillez entrer une date valide";
+    printError(formData[3], dateErrorMessage)
+  } else if (!isDateBeforeToday(date)) {
+    const dateErrorMessage = "La date ne doit pas être dans le futur";
+    printError(formData[3], dateErrorMessage)
+  } else {
+    removeError(formData[3]);
+  }
   
 
   //Quantity validation
@@ -84,16 +97,30 @@ function validate() {
   let acceptTCo = document.getElementById('checkbox1').checked;
   if (!acceptTCo) {
     const tCoErrorMessage = "Vous devez vérifier que vous acceptez les termes et conditions."
-    console.log(tCoErrorMessage)
+    printError(formData[6], tCoErrorMessage)
+  } else {
+    removeError(formData[6]);
   }
 }
 
-//Create an error div
+//Show error 
 function printError(htmlElement, errorMessage) {
-  const div = document.createElement("div");
-  div.innerHTML = errorMessage;
-  div.classList.add("errorMessage");
-  htmlElement.appendChild(div);
+  htmlElement.setAttribute("data-error", errorMessage);
+  htmlElement.setAttribute("data-error-visible", "true");
+}
+
+//Remove error
+function removeError(htmlElement) {
+  htmlElement.setAttribute("data-error-visible", "false");
+  htmlElement.removeAttribute("data-error");
+}
+
+//Check if date if before today
+function isDateBeforeToday(date) {
+  const today = new Date().getTime()
+  const dateInput = new Date(date).getTime();
+
+  return ((today - dateInput) > 0);
 }
 
 
