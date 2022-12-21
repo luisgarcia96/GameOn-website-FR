@@ -45,6 +45,7 @@ function validate() {
   const nameRegex =  /^[a-z][a-z\d]*[a-z]$/;
   const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
   const dateRegex = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/;
+  const numberRegex = /^[0-9]*$/;
 
 
   //First Name validation
@@ -88,10 +89,23 @@ function validate() {
   
 
   //Quantity validation
-  
+  let quantity = document.getElementById('quantity').value;
+  if (!numberRegex.test(quantity) || quantity < 0 || quantity > 99) {
+    const quantityErrorMessage = "Veuillez entrer un nombre valide"
+    printError(formData[4], quantityErrorMessage);
+  } else {
+    removeError(formData[4]);
+  }
   
   //Location validation
-  
+  let location = document.querySelector('input[name="location"]:checked');
+  console.log(location);
+  if (location === null) {
+    const locationError = "Veuillez sélectionner une ville";
+    printError(formData[5], locationError);
+  } else {
+    removeError(formData[5]);
+  }
   
   //Conditions and terms validation
   let acceptTCo = document.getElementById('checkbox1').checked;
