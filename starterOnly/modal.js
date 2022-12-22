@@ -12,7 +12,8 @@ const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
 const modalCloseIcon = document.querySelector(".close");
-const form = document.getElementById('form');
+const form = document.getElementById("form");
+const successMessage = document.getElementById("success_message");
 
 
 // Launch modal event
@@ -28,19 +29,19 @@ function closeModal() {
   modalbg.style.display = "none";
 }
 
-
-form.addEventListener('submit', (e) => {
-  let messages = [];
-
-  if (messages.length === 0) {
-    e.preventDefault();
-    console.log(messages.join(', '));
-  }
-})
-
 //Validate form
-function validate() {
+function validate(event) {
+  event.preventDefault();
 
+  //Form value checkers
+  let isFirstOK = false;
+  let isLastOK = false;
+  let isEmailOK = false;
+  let isDateOK = false;
+  let isQuantityOK = false;
+  let isLocationOK = false;
+  let isTCoOK = false;
+  
   //Regex necessary for different validations
   const nameRegex =  /^[a-z][a-z\d]*[a-z]$/;
   const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
@@ -55,6 +56,7 @@ function validate() {
     printError(formData[0], nameErrorMessage);
   } else {
     removeError(formData[0]);
+    isFirstOK = true;
   }
 
   //Last name validation
@@ -64,6 +66,7 @@ function validate() {
     printError(formData[1], lastNameErrorMessage);
   } else {
     removeError(formData[1]);
+    isLastOK = true;
   }
   
   //Email validation
@@ -73,6 +76,7 @@ function validate() {
     printError(formData[2], emailErrorMessage);
   } else {
     removeError(formData[2]);
+    isEmailOK = true;
   }
   
   //Date validation
@@ -85,8 +89,8 @@ function validate() {
     printError(formData[3], dateErrorMessage)
   } else {
     removeError(formData[3]);
+    isDateOK = true;
   }
-  
 
   //Quantity validation
   let quantity = document.getElementById('quantity').value;
@@ -95,16 +99,17 @@ function validate() {
     printError(formData[4], quantityErrorMessage);
   } else {
     removeError(formData[4]);
+    isQuantityOK = true;
   }
   
   //Location validation
   let location = document.querySelector('input[name="location"]:checked');
-  console.log(location);
   if (location === null) {
     const locationError = "Veuillez sélectionner une ville";
     printError(formData[5], locationError);
   } else {
     removeError(formData[5]);
+    isLocationOK = true;
   }
   
   //Conditions and terms validation
@@ -114,6 +119,12 @@ function validate() {
     printError(formData[6], tCoErrorMessage)
   } else {
     removeError(formData[6]);
+    isTCoOK = true;
+  }
+
+  if (isFirstOK && isLastOK && isEmailOK && isDateOK && isQuantityOK && isLocationOK && isTCoOK) 
+  {
+    form.submit();
   }
 }
 
