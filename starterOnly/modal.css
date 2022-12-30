@@ -188,6 +188,25 @@ main {
   margin: 15px auto;
 }
 
+#success_message {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  height: 43rem;
+}
+
+#success_message p{
+  margin-top: auto;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+#success_message button{
+  margin-top: auto;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
 label {
   font-family: var(--font-default);
   font-size: 17px;
@@ -326,6 +345,7 @@ input[data-error]::after {
   background: #fe142f;
   display: block;
   margin: 0 auto;
+  margin-top: 1.5rem;
   border-radius: 7px;
   font-size: 1rem;
   padding: 12px 82px;

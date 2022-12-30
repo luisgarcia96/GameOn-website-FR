@@ -43,7 +43,7 @@ function validate(event) {
   let isTCoOK = false;
   
   //Regex necessary for different validations
-  const nameRegex =  /^[a-z][a-z\d]*[a-z]$/;
+  const nameRegex =  /^[A-Za-z.\s_-]+$/;
   const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
   const dateRegex = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/;
   const numberRegex = /^[0-9]*$/;
@@ -124,7 +124,8 @@ function validate(event) {
 
   if (isFirstOK && isLastOK && isEmailOK && isDateOK && isQuantityOK && isLocationOK && isTCoOK) 
   {
-    form.submit();
+    form.style.display = "none"
+    successMessage.style.display = "flex";
   }
 }
 
@@ -147,7 +148,3 @@ function isDateBeforeToday(date) {
 
   return ((today - dateInput) > 0);
 }
-
-
-
-
